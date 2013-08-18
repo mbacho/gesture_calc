@@ -1,0 +1,8 @@
+
+#ide files
+
+Bin/*
+Calc.csproj
+Calc.csproj.user
+obj/*
+Properties/*
