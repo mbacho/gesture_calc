@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Collections.Generic;
 
 namespace Calc.data
 {
@@ -22,7 +23,16 @@ namespace Calc.data
         //char ops = { '*', '/', '+', '-' };
         //char paren = { '(', ')' };
 
+        private Stack<string> calcStack;
+
+        private static const char STACK_BOTTOM = '#';
+        
+        public Parser() { calcStack = new Stack<string>(); calcStack.Push(STACK_BOTTOM.ToString()); }
+
+        private string toPostFix(string exp) { return null; }
+
         private bool isValid(string exp) { return true; }
+
         public double evaluate(string exp) { if (isValid(exp))return 0.0; else { throw new ParserException("Invalid expression"); } }
     }
 }
