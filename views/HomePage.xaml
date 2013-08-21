@@ -28,10 +28,12 @@
             </ListBox>
         </StackPanel>
         <Grid x:Name="ContentPanel" Margin="12,12,12,12" VerticalAlignment="Bottom">
+            <toolkit:ToggleSwitch Name="tglGestMode" Content="" HorizontalAlignment="Left" IsChecked="{Binding}" DataContext="{Binding Path=gestureMode}"></toolkit:ToggleSwitch>
             <StackPanel>
                 <TextBlock TextAlignment="Right" Name="txtInput" Style="{StaticResource PhoneTextTitle1Style}"/>
                 <StackPanel HorizontalAlignment="Right"  Orientation="Horizontal">
                     <Button IsEnabled="{Binding ElementName=lstHist, Path=Items.Count}" Visibility="{Binding ElementName=lstHist, Path=Visibility}" Height="80" Width="120" Name="btnClearHist" Click="btnClearHist_Click" Content="Clear"/>
+
                     <!-- TODO btn visible on launch -->
                     <Button HorizontalAlignment="Right" Height="80" Width="110" Name="btnToggleKeys" Click="btnToggleKeys_Click">
                         <Button.Content>

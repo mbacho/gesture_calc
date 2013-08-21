@@ -25,7 +25,7 @@ namespace Calc.data
 
         private Stack<string> calcStack;
 
-        private static const char STACK_BOTTOM = '#';
+        private static char STACK_BOTTOM = '#';
         
         public Parser() { calcStack = new Stack<string>(); calcStack.Push(STACK_BOTTOM.ToString()); }
 

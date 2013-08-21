@@ -17,7 +17,7 @@ namespace Calc.views
 {
     public partial class HomePage : PhoneApplicationPage
     {
-        private bool keysHidden, isEvaluated, inParen;
+        private bool keysHidden, isEvaluated, inParen, gestureMode;
         private enum ViewInputMode
         {
             KEYS_SHOWN, KEYS_HIDDEN, GESTURE
@@ -27,11 +27,18 @@ namespace Calc.views
         public HomePage()
         {
             InitializeComponent();
-            keysHidden = isEvaluated = false;
+            keysHidden = isEvaluated = false; gestureMode = true;
             hist = new HistoryModel();
             hist.loadHistory();
             lstHist.DataContext = hist;
             lstHist.SelectionChanged += new SelectionChangedEventHandler(lstHist_SelectionChanged);
+            lstHist.ManipulationCompleted += new EventHandler<ManipulationCompletedEventArgs>(lstHist_ManipulationCompleted);
+        }
+
+        private void lstHist_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            Point start = new Point { X = e.ManipulationOrigin.X, Y = e.ManipulationOrigin.Y };
+
         }
 
         #region navigation
@@ -109,7 +116,8 @@ namespace Calc.views
                 }
                 //BitmapImage img = new BitmapImage(new Uri(((keysHidden) ? "/media/up.png" : "/media/down.png"), UriKind.Relative));
                 //imgToggleKeys.Source = img;
-                //btnToggleKeys.Content = img;
+                Image img = btnToggleKeys.Content as Image;
+                img.Source = new BitmapImage(new Uri("/media/down.png"));
                 keysHidden = !keysHidden;
             };
             if (keysHidden) { lstHist.Visibility = System.Windows.Visibility.Collapsed; grdKeys.Visibility = System.Windows.Visibility.Visible; }
