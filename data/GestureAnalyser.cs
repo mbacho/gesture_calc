@@ -1,21 +1,29 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace Calc.data
 {
     public class GestureAnalyser
     {
-        public Vector generalDirection(Point start, Point end)
+        public char probableChar(Vector v)
         {
-            double x_diff = start.X - end.X, y_diff = start.X - end.X, angle = 0;
+            switch (v.direction)
+            {
+                case Vector.DIRECTIONS.NONE: return '~';
+                case Vector.DIRECTIONS.NORTH: return '1';
+                case Vector.DIRECTIONS.NEAST: return '1';
+                case Vector.DIRECTIONS.NWEST: return '1';
+                case Vector.DIRECTIONS.SOUTH: return '1';
+                case Vector.DIRECTIONS.SEAST: return '1';
+                case Vector.DIRECTIONS.SWEST: return '1';
+                case Vector.DIRECTIONS.WEST: return '~';
+                case Vector.DIRECTIONS.EAST: return '~';
+                default: return '~';
+            }
+        }
+
+        public Vector getVector(Point start, Point end)
+        {
+            double x_diff = end.X - start.X, y_diff = end.X - start.X, angle = 0;
             Vector.DIRECTIONS direction = Vector.DIRECTIONS.NONE;
             if (x_diff < 0) //going left
             {
@@ -48,10 +56,10 @@ namespace Calc.data
             return new Vector { direction = direction, start = start, stop = end, angle = angle };
         }
 
-        private double getAngle(Point start, Point end) 
-        { 
+        private double getAngle(Point start, Point end)
+        {
             //TODO Code to get angle
-            return 0.0; 
+            return 0.0;
         }
     }
 }

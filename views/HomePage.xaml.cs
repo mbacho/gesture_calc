@@ -17,11 +17,7 @@ namespace Calc.views
 {
     public partial class HomePage : PhoneApplicationPage
     {
-        private bool keysHidden, isEvaluated, inParen, gestureMode;
-        private enum ViewInputMode
-        {
-            KEYS_SHOWN, KEYS_HIDDEN, GESTURE
-        }
+        private bool keysHidden, isEvaluated, gestureMode;
         private HistoryModel hist;
 
         public HomePage()
@@ -32,13 +28,7 @@ namespace Calc.views
             hist.loadHistory();
             lstHist.DataContext = hist;
             lstHist.SelectionChanged += new SelectionChangedEventHandler(lstHist_SelectionChanged);
-            lstHist.ManipulationCompleted += new EventHandler<ManipulationCompletedEventArgs>(lstHist_ManipulationCompleted);
-        }
-
-        private void lstHist_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
-        {
-            Point start = new Point { X = e.ManipulationOrigin.X, Y = e.ManipulationOrigin.Y };
-
+            btnGest.Click += (sender, args) => { NavigationService.Navigate(new Uri("/views/GesturePage.xaml", UriKind.RelativeOrAbsolute)); };
         }
 
         #region navigation
@@ -83,23 +73,16 @@ namespace Calc.views
 
         private void btnEquals_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                string s = txtInput.Text;
-                Parser parser = new Parser();
-                double val = parser.evaluate(s);
-                hist.addEntry(s);
-                txtInput.Text = val.ToString();
-                isEvaluated = true;
-            }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
-        }
-
-        private void btnParen_Click(object sender, RoutedEventArgs e)
-        {
-            if (isEvaluated) { txtInput.Text = ""; isEvaluated = false; }
-            txtInput.Text += ((inParen) ? ")" : "(");
-            inParen = !inParen;
+            //try
+            //{
+            string s = txtInput.Text;
+            Parser parser = new Parser();
+            double val = parser.evaluate(s);
+            hist.addEntry(s);
+            txtInput.Text = val.ToString();
+            isEvaluated = true;
+            //}
+            //catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void toggleMode()
@@ -140,6 +123,17 @@ namespace Calc.views
         private void btnClearHist_Click(object sender, RoutedEventArgs e)
         {
             hist.clearHistory();
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            txtInput.Text = string.Empty;
+        }
+
+        private void txtInput_TextInput(object sender, TextCompositionEventArgs e)
+        {
+            //change textblock style as text changes
+            //
         }
     }
 }
