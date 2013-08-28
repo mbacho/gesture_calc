@@ -11,13 +11,13 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <StackPanel HorizontalAlignment="Stretch"  Margin="12,12,12,12" >
-            <TextBlock Text="kalkyuleta" Style="{StaticResource PhoneTextTitle1Style}" />
+            <!--<TextBlock Text="kalkyuleta" Style="{StaticResource PhoneTextTitle1Style}" />-->
             <ListBox Visibility="Collapsed" Margin="12,12,12,12" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="lstHist" ItemsSource="{Binding Path=histData, Mode=OneWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -29,13 +29,22 @@
         </StackPanel>
         <Grid x:Name="ContentPanel" Margin="12,12,12,12" VerticalAlignment="Bottom">
             <StackPanel>
-                <TextBlock TextAlignment="Right" Name="txtInput" Style="{StaticResource PhoneTextTitle1Style}"/>
+                <Border>
+                    <!-- set textblock background here coz they don't have a bg property -->
+                    <TextBlock Margin="0,0,0,20" TextAlignment="Right" Name="txtInput" Style="{StaticResource PhoneTextTitle1Style}" TextInput="txtInput_TextInput" />
+                </Border>
                 <StackPanel HorizontalAlignment="Right"  Orientation="Horizontal">
                     <Button IsEnabled="{Binding ElementName=lstHist, Path=Items.Count}" Visibility="{Binding ElementName=lstHist, Path=Visibility}" Height="80" Width="120" Name="btnClearHist" Click="btnClearHist_Click" Content="Clear"/>
                     <!-- TODO btn visible on launch -->
-                    <Button HorizontalAlignment="Right" Height="80" Width="110" Name="btnToggleKeys" Click="btnToggleKeys_Click">
+                    <Button HorizontalAlignment="Right"  Width="110" Name="btnToggleKeys" Click="btnToggleKeys_Click">
                         <Button.Content>
                             <Image Source="/images/down.png" Name="imgToggleKeys"/>
+                        </Button.Content>
+                    </Button>
+                    <Button Name="btnCancel" Content="C" Width="110" HorizontalAlignment="Left" Click="btnCancel_Click"></Button>
+                    <Button Name="btnDel" Click="btnDel_Click" Width="110">
+                        <Button.Content>
+                            <Image Source="/images/undo.png"/>
                         </Button.Content>
                     </Button>
                 </StackPanel>
@@ -53,14 +62,9 @@
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="100"/>
-
                     </Grid.RowDefinitions>
 
-                    <Button Grid.Column="3" Name="btnDel" Click="btnDel_Click">
-                        <Button.Content>
-                            <Image Source="/images/undo.png"/>
-                        </Button.Content>
-                    </Button>
+
                     <Button Content="1" Grid.Column="0" Grid.Row="2" Click="btnNum_Click"/>
                     <Button Content="2" Grid.Column="1" Grid.Row="2" Click="btnNum_Click"/>
                     <Button Content="3" Grid.Column="2" Grid.Row="2" Click="btnNum_Click"/>
@@ -71,32 +75,31 @@
                     <Button Content="8" Grid.Column="1" Grid.Row="0" Click="btnNum_Click"/>
                     <Button Content="9" Grid.Column="2" Grid.Row="0" Click="btnNum_Click"/>
 
-                    <Button Content="." Grid.Column="0" Grid.Row="3" Click="btnOps_Click"/>
-                    <Button Content="0" Grid.Column="1" Grid.Row="3" Click="btnNum_Click"/>
-                    <Button Content="(  )" Grid.Column="2" Grid.Row="3" Name="btnParen" Click="btnParen_Click"/>
+                    <Button Content="+/-" Grid.Column="0" Grid.Row="3"/>
+                    <Button Content="." Grid.Column="1" Grid.Row="3" Click="btnOps_Click"/>
+                    <Button Content="0" Grid.Column="2" Grid.Row="3" Click="btnNum_Click"/>
 
-                    <Button Content="+" Grid.Column="4" Grid.Row="1" Click="btnOps_Click"/>
+                    <Button Content="/" Grid.Column="4" Grid.Row="0" Click="btnOps_Click"/>
+                    <Button Content="*" Grid.Column="4" Grid.Row="1" Click="btnOps_Click"/>
                     <Button Content="-" Grid.Column="4" Grid.Row="2" Click="btnOps_Click"/>
-                    <Button Content="*" Grid.Column="4" Grid.Row="3" Click="btnOps_Click"/>
-                    <Button Content="&#247;" Grid.Column="4" Grid.Row="4" Click="btnOps_Click"/>
+                    <Button Content="+" Grid.Column="4" Grid.Row="3" Click="btnOps_Click"/>
 
-                    <Button Content="=" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Name="btnEquals" Click="btnEquals_Click"/>
-                    <Button Content="+/-" Grid.Column="0" Grid.Row="4"/>
+                    <Button Content="=" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2" Name="btnEquals" Click="btnEquals_Click"/>
+                    <Button Content="(" Grid.Column="0" Grid.Row="4" Click="btnOps_Click"/>
+                    <Button Content=")" Grid.Column="1" Grid.Row="4" Click="btnOps_Click"/>
                 </Grid>
             </StackPanel>
         </Grid>
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Minimized">
+            <!-- TODO Find gesture icon -->
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
-                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+                <shell:ApplicationBarMenuItem Text="gesture mode" Click="mnuGest_Click" x:Name="mnuGuest" />
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
+    </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

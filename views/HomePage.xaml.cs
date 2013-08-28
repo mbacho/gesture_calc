@@ -17,21 +17,22 @@ namespace Calc.views
 {
     public partial class HomePage : PhoneApplicationPage
     {
-        private bool keysHidden, isEvaluated, inParen;
-        private enum ViewInputMode
-        {
-            KEYS_SHOWN, KEYS_HIDDEN, GESTURE
-        }
+        private bool keysHidden, isEvaluated, gestureMode;
         private HistoryModel hist;
 
         public HomePage()
         {
             InitializeComponent();
-            keysHidden = isEvaluated = false;
+            keysHidden = isEvaluated = false; gestureMode = true;
             hist = new HistoryModel();
             hist.loadHistory();
             lstHist.DataContext = hist;
             lstHist.SelectionChanged += new SelectionChangedEventHandler(lstHist_SelectionChanged);
+        }
+
+        private void mnuGest_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/views/GesturePage.xaml", UriKind.RelativeOrAbsolute));
         }
 
         #region navigation
@@ -76,23 +77,16 @@ namespace Calc.views
 
         private void btnEquals_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                string s = txtInput.Text;
-                Parser parser = new Parser();
-                double val = parser.evaluate(s);
-                hist.addEntry(s);
-                txtInput.Text = val.ToString();
-                isEvaluated = true;
-            }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
-        }
-
-        private void btnParen_Click(object sender, RoutedEventArgs e)
-        {
-            if (isEvaluated) { txtInput.Text = ""; isEvaluated = false; }
-            txtInput.Text += ((inParen) ? ")" : "(");
-            inParen = !inParen;
+            //try
+            //{
+            string s = txtInput.Text;
+            Parser parser = new Parser();
+            double val = parser.evaluate(s);
+            hist.addEntry(s);
+            txtInput.Text = val.ToString();
+            isEvaluated = true;
+            //}
+            //catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void toggleMode()
@@ -109,7 +103,8 @@ namespace Calc.views
                 }
                 //BitmapImage img = new BitmapImage(new Uri(((keysHidden) ? "/media/up.png" : "/media/down.png"), UriKind.Relative));
                 //imgToggleKeys.Source = img;
-                //btnToggleKeys.Content = img;
+                Image img = btnToggleKeys.Content as Image;
+                img.Source = new BitmapImage(new Uri("/media/down.png"));
                 keysHidden = !keysHidden;
             };
             if (keysHidden) { lstHist.Visibility = System.Windows.Visibility.Collapsed; grdKeys.Visibility = System.Windows.Visibility.Visible; }
@@ -132,6 +127,17 @@ namespace Calc.views
         private void btnClearHist_Click(object sender, RoutedEventArgs e)
         {
             hist.clearHistory();
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            txtInput.Text = string.Empty;
+        }
+
+        private void txtInput_TextInput(object sender, TextCompositionEventArgs e)
+        {
+            //change textblock style as text changes
+            //
         }
     }
 }
