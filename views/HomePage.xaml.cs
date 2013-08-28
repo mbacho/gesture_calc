@@ -28,7 +28,11 @@ namespace Calc.views
             hist.loadHistory();
             lstHist.DataContext = hist;
             lstHist.SelectionChanged += new SelectionChangedEventHandler(lstHist_SelectionChanged);
-            btnGest.Click += (sender, args) => { NavigationService.Navigate(new Uri("/views/GesturePage.xaml", UriKind.RelativeOrAbsolute)); };
+        }
+
+        private void mnuGest_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/views/GesturePage.xaml", UriKind.RelativeOrAbsolute));
         }
 
         #region navigation
