@@ -17,13 +17,13 @@ namespace Calc.views
 {
     public partial class HomePage : PhoneApplicationPage
     {
-        private bool keysHidden, isEvaluated, gestureMode;
+        private bool keysHidden, isEvaluated;
         private HistoryModel hist;
 
         public HomePage()
         {
             InitializeComponent();
-            keysHidden = isEvaluated = false; gestureMode = true;
+            keysHidden = isEvaluated = false;
             hist = new HistoryModel();
             hist.loadHistory();
             lstHist.DataContext = hist;
@@ -77,16 +77,16 @@ namespace Calc.views
 
         private void btnEquals_Click(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            string s = txtInput.Text;
-            Parser parser = new Parser();
-            double val = parser.evaluate(s);
-            hist.addEntry(s);
-            txtInput.Text = val.ToString();
-            isEvaluated = true;
-            //}
-            //catch (Exception ex) { MessageBox.Show(ex.Message); }
+            try
+            {
+                string s = txtInput.Text;
+                Parser parser = new Parser();
+                double val = parser.evaluate(s);
+                hist.addEntry(s);
+                txtInput.Text = val.ToString();
+                isEvaluated = true;
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void toggleMode()
@@ -101,10 +101,12 @@ namespace Calc.views
                     lstHist.Visibility = System.Windows.Visibility.Visible;
                     grdKeys.Visibility = System.Windows.Visibility.Collapsed;
                 }
-                //BitmapImage img = new BitmapImage(new Uri(((keysHidden) ? "/media/up.png" : "/media/down.png"), UriKind.Relative));
-                //imgToggleKeys.Source = img;
-                Image img = btnToggleKeys.Content as Image;
-                img.Source = new BitmapImage(new Uri("/media/down.png"));
+                try
+                {
+                    BitmapImage img = new BitmapImage(new Uri(((keysHidden) ? "/images/down.png" : "/images/up.png"), UriKind.Relative));
+                    imgToggleKeys.Source = img;
+                }
+                catch (Exception ex) { MessageBox.Show(ex.Message); }
                 keysHidden = !keysHidden;
             };
             if (keysHidden) { lstHist.Visibility = System.Windows.Visibility.Collapsed; grdKeys.Visibility = System.Windows.Visibility.Visible; }
